@@ -6,7 +6,38 @@ Install and run
 If port is already taken run  
 `lsof -t -i tcp:4200 | xargs kill -9`
 
+# Firebase settings
+## Create new project in Firebase
+Get config values for app from `Project Settings > General > Config`  
 
+It should look like this  
+```
+const firebaseConfig = {
+  apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  authDomain: "weather-xxxxx.firebaseapp.com",
+  databaseURL: "https://weather-xxxxx.firebaseio.com",
+  projectId: "weather-xxxxx",
+  storageBucket: "weather-xxxxx.appspot.com",
+  messagingSenderId: "xxxxxxxxxxxx",
+  appId: "1:xxxxxx:web:xxxxxxxxxxxx",
+  measurementId: "xxxxxxxxxxxx"
+};
+```
+## Firebase auth
+Allow desired sign in methods. Thats all you need to configure.
+
+## Firestore
+Firestore database rules allow to read and write only to logged in userand only for collections where collection name matches `uid`  
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{collectionID}/{documentID} {
+      allow read, write: if collectionID == request.auth.uid;
+    }
+  }
+}
+```
 
 
 # Info
